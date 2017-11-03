@@ -4,7 +4,7 @@
 
 import {DragSource, DropTarget} from 'react-dnd';
 
-export const dragSource = type => DragSource(
+const dragSource = type => DragSource(
     type,
     {
         beginDrag: (props, monitor, component) => ({id: props.id}),
@@ -20,3 +20,27 @@ export const dragSource = type => DragSource(
         isDragging: monitor.isDragging()
     })
 );
+
+const hierarchicalDropTarget = (type, action, name) => DropTarget(
+    type,
+    {
+        drop: (props, monitor) => ({
+            dropEffect: action,
+            sourceId: monitor.getItem().id,
+            targetId: props.id
+        }),
+        canDrop: (props, monitor) => {
+            const sourceId = monitor.getItem().id;
+            const restrictedNodes = (props.parents || []).concat(props.id);
+            const canDrop = !restrictedNodes.includes(sourceId);
+            return canDrop;
+        }
+    },
+    (connect, monitor) => ({
+        [name + 'DropTarget']: connect.dropTarget(),
+        [name + 'CanDrop']: monitor.canDrop(),
+        [name + 'IsOver']: monitor.isOver(),
+    })
+);
+
+export {dragSource, hierarchicalDropTarget};

@@ -43,7 +43,12 @@ const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTarget(
                 }
             }).raw;
             const item = monitor.getItem();
-            return typeof options[item.type] !== 'undefined' ? options[item.type](item) : false;
+            if(typeof options[item.type] !== 'undefined') {
+                return options[item.type](item);
+            } else {
+                console.log("Unsupported drop type: " + item.type);
+                return false;
+            };
         }
     },
     (connect, monitor) => ({

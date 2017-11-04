@@ -3,16 +3,18 @@
  */
 
 import {DragSource, DropTarget} from 'react-dnd';
+import {notEmpty} from 'atp-pointfree';
+import {o} from 'atp-sugar';
 
 const dragSource = type => DragSource(
     type,
     {
-        beginDrag: (props, monitor, component) => ({id: props.id}),
+        beginDrag: (props, monitor, component) => ({
+            id: props.id,
+            type: typeof type === 'function' ? type(props) : type
+        }),
         endDrag: (props, monitor) => {
-            const result = monitor.getDropResult();
-            if(result) {
-                props.onMove(result);
-            }
+            notEmpty(monitor.getDropResult()).then(props.onDrop);
         }
     },
     (connect, monitor) => ({
@@ -21,19 +23,27 @@ const dragSource = type => DragSource(
     })
 );
 
-const hierarchicalDropTarget = (type, action, name) => DropTarget(
+const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTarget(
     type,
     {
         drop: (props, monitor) => ({
-            dropEffect: action,
+            action,
+            sourceType: monitor.getItem().type,
             sourceId: monitor.getItem().id,
             targetId: props.id
         }),
         canDrop: (props, monitor) => {
-            const sourceId = monitor.getItem().id;
-            const restrictedNodes = (props.parents || []).concat(props.id);
-            const canDrop = !restrictedNodes.includes(sourceId);
-            return canDrop;
+            const thisType = typeof type === 'function' ? type(props) : type;
+            const options = o(accepts(props)).merge({
+                [thisType]: item => {
+                    const sourceId = item.id;
+                    const restrictedNodes = (props.parents || []).concat(props.id);
+                    const canDrop = !restrictedNodes.includes(sourceId);
+                    return canDrop;
+                }
+            }).raw;
+            const item = monitor.getItem();
+            return typeof options[item.type] !== 'undefined' ? options[item.type](item) : false;
         }
     },
     (connect, monitor) => ({

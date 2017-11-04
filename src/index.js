@@ -14,6 +14,7 @@ const dragSource = type => DragSource(
             type: typeof type === 'function' ? type(props) : type
         }),
         endDrag: (props, monitor) => {
+            console.log(monitor.getDropResult());
             notEmpty(monitor.getDropResult()).then(props.onDrop);
         }
     },
@@ -24,7 +25,7 @@ const dragSource = type => DragSource(
 );
 
 const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTarget(
-    type,
+    props => o(accepts(props)).keys().concat(typeof type === 'function' ? type(props) : type),
     {
         drop: (props, monitor) => ({
             action,

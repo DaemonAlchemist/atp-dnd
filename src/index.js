@@ -14,10 +14,7 @@ const dragSource = type => DragSource(
             type: typeof type === 'function' ? type(props) : type
         }),
         endDrag: (props, monitor) => {
-            console.log("Dropped");
             const result = monitor.getDropResult()
-            console.log(result);
-
             if(props.onDropped) {
                 notEmpty(result).then(props.onDropped);
             }

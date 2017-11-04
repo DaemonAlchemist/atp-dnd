@@ -14,8 +14,13 @@ const dragSource = type => DragSource(
             type: typeof type === 'function' ? type(props) : type
         }),
         endDrag: (props, monitor) => {
-            console.log(monitor.getDropResult());
-            notEmpty(monitor.getDropResult()).then(props.onDrop);
+            console.log("Dropped");
+            const result = monitor.getDropResult()
+            console.log(result);
+
+            if(props.onDropped) {
+                notEmpty(result).then(props.onDropped);
+            }
         }
     },
     (connect, monitor) => ({
@@ -27,12 +32,20 @@ const dragSource = type => DragSource(
 const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTarget(
     props => o(accepts(props)).keys().concat(typeof type === 'function' ? type(props) : type),
     {
-        drop: (props, monitor) => ({
-            action,
-            sourceType: monitor.getItem().type,
-            sourceId: monitor.getItem().id,
-            targetId: props.id
-        }),
+        drop: (props, monitor) => {
+            const result = {
+                action,
+                sourceType: monitor.getItem().type,
+                sourceId: monitor.getItem().id,
+                targetId: props.id
+            };
+
+            if(props.onReceiveDrop) {
+                notEmpty(result).then(props.onReceiveDrop);
+            }
+
+            return result;
+        },
         canDrop: (props, monitor) => {
             const thisType = typeof type === 'function' ? type(props) : type;
             const options = o(accepts(props)).merge({

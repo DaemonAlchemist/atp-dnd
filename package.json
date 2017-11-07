@@ -16,7 +16,9 @@
     "major-clean": "npm install && npm run major && rm -rf node_modules",
     "minor-clean": "npm install && npm run minor && rm -rf node_modules",
     "patch-clean": "npm install && npm run patch && rm -rf node_modules",
-    "doc": "documentation build -o doc -f html src/index.js"
+    "doc": "documentation build -o doc -f html src/index.js",
+    "check": "ncu --packageFile package.json",
+    "evergreen": "ncu -ua --packageFile package.json"
   },
   "repository": {
     "type": "git",
@@ -25,15 +27,17 @@
   "author": "Andrew Wittrock",
   "license": "MIT",
   "dependencies": {
+    "atp-pointfree": "^0.3.1",
+    "atp-sugar": "^0.8.1",
     "react-dnd": "^2.5.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "clean-documentation-theme": "^0.5.2",
     "documentation": "^5.3.3",
-    "mocha": "^3.5.0"
+    "mocha": "^4.0.1"
   }
 }

@@ -2,12 +2,14 @@
  * Created by Andrea on 11/3/2017.
  */
 
-import {DropTarget} from 'react-dnd';
+import React from 'react';
+import {DropTarget as DropTargetBase} from 'react-dnd';
 import {notEmpty} from 'atp-pointfree';
 import {o} from 'atp-sugar';
-import DragSource from "./containers/drag-source";
+import Draggable from "./containers/drag-source";
+import DropTarget from "./containers/drop-target";
 
-const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTarget(
+const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTargetBase(
     props => o(accepts(props)).keys().concat(typeof type === 'function' ? type(props) : type),
     {
         drop: (props, monitor) => {
@@ -51,39 +53,16 @@ const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTarget(
     })
 );
 
-const dropTarget = ({action, name, accepts}) => DropTarget(
-    props => o(accepts(props)).keys(),
-    {
-        drop: (props, monitor) => {
-            const result = {
-                action,
-                sourceType: monitor.getItem().type,
-                sourceId: monitor.getItem().id,
-                targetId: props.id
-            };
+class Active extends React.Component {
+    render() {
+        return this.props.children;
+    }
+}
 
-            if(props.onReceiveDrop) {
-                notEmpty(result).then(props.onReceiveDrop);
-            }
+class Inactive extends React.Component {
+    render() {
+        return this.props.children;
+    }
+}
 
-            return result;
-        },
-        canDrop: (props, monitor) => {
-            const options = accepts(props);
-            const item = monitor.getItem();
-            if(typeof options[item.type] !== 'undefined') {
-                return options[item.type](item);
-            } else {
-                console.log("Unsupported drop type: " + item.type);
-                return false;
-            };
-        }
-    },
-    (connect, monitor) => ({
-        [name + 'DropTarget']: connect.dropTarget(),
-        [name + 'CanDrop']: monitor.canDrop(),
-        [name + 'IsOver']: monitor.isOver(),
-    })
-);
-
-export {hierarchicalDropTarget, dropTarget, DragSource};
+export {hierarchicalDropTarget, Draggable, DropTarget, Active, Inactive};

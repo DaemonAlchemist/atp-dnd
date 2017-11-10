@@ -23,7 +23,8 @@ export default DragSource(
         dragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     })
-)(props => props.dragSource(props.children.length > 1
-    ? <div>{props.children}</div>
-    : props.children
+)(props => props.dragSource(
+    <div style={props.style || {}}>
+        {props.children}
+    </div>
 ));

@@ -7,6 +7,7 @@ import {DropTarget} from "react-dnd";
 import {o} from 'atp-sugar';
 import typeOf from 'typeof';
 import {Active, Inactive} from "../index";
+import {notEmpty} from 'atp-pointfree';
 
 export default DropTarget(
     props => typeOf(props.accepts) === 'object' ? o(props.accepts).keys() : props.accepts,

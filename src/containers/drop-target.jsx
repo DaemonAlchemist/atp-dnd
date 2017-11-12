@@ -3,13 +3,22 @@
  */
 
 import React from 'react';
-import {DropTarget} from "react-dnd";
+import {DropTarget as DropTargetBase} from "react-dnd";
 import {o} from 'atp-sugar';
 import typeOf from 'typeof';
 import {Active, Inactive} from "../index";
 import {notEmpty} from 'atp-pointfree';
+import {provideContext} from 'atp-react-context';
+import PropTypes from "prop-types";
+import {compose} from 'atp-pointfree';
 
-export default DropTarget(
+export const dropTargetContext = {
+    dropTargetIsOver: PropTypes.bool,
+    dropTargetCanDrop: PropTypes.bool
+};
+
+//TODO:  Make this into a class so the recurse function works
+const dropTarget = DropTargetBase(
     props => typeOf(props.accepts) === 'object' ? o(props.accepts).keys() : props.accepts,
     {
         drop: (props, monitor) => {
@@ -52,17 +61,16 @@ export default DropTarget(
     },
     (connect, monitor) => ({
         dropTarget: connect.dropTarget(),
-        canDrop: monitor.canDrop(),
-        isOver: monitor.isOver(),
+        dropTargetCanDrop: monitor.canDrop(),
+        dropTargetIsOver: monitor.isOver(),
     })
+);
+
+export default compose(
+    dropTarget,
+    provideContext(dropTargetContext),
 )(props => props.dropTarget(
     <div style={props.style || {}}>
-        {React.Children.map(props.children, child =>
-            (
-                   child.type === Active && props.isOver
-                || child.type === Inactive && !props.isOver
-                || child.type !== Active && child.type !== Inactive
-            ) && child
-        )}
+        {props.children}
     </div>
 ));

@@ -29,7 +29,9 @@
   "license": "MIT",
   "dependencies": {
     "atp-pointfree": "^0.3.2",
+    "atp-react-context": "^0.1.1",
     "atp-sugar": "^0.8.3",
+    "prop-types": "^15.6.0",
     "react": "^16.1.0",
     "react-dnd": "^2.5.4",
     "typeof": "^1.0.0"

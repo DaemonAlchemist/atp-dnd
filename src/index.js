@@ -7,7 +7,8 @@ import {DropTarget as DropTargetBase} from 'react-dnd';
 import {notEmpty} from 'atp-pointfree';
 import {o} from 'atp-sugar';
 import Draggable from "./containers/drag-source";
-import DropTarget from "./containers/drop-target";
+import DropTarget, {dropTargetContext} from "./containers/drop-target";
+import {addContext} from 'atp-react-context';
 
 const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTargetBase(
     props => o(accepts(props)).keys().concat(typeof type === 'function' ? type(props) : type),
@@ -53,16 +54,20 @@ const hierarchicalDropTarget = ({type, action, name, accepts}) => DropTargetBase
     })
 );
 
-class Active extends React.Component {
-    render() {
-        return this.props.children;
-    }
-}
+const Active = addContext(dropTargetContext)(props =>
+    props.dropTargetIsOver ? React.Children.map(props.children, child => child) : null
+);
 
-class Inactive extends React.Component {
-    render() {
-        return this.props.children;
-    }
-}
+const Inactive = addContext(dropTargetContext)(props =>
+    !props.dropTargetIsOver ? React.Children.map(props.children, child => child) : null
+);
 
-export {hierarchicalDropTarget, Draggable, DropTarget, Active, Inactive};
+const CanDrop = addContext(dropTargetContext)(props =>
+    props.dropTargetCanDrop ? React.Children.map(props.children, child => child) : null
+);
+
+const CannotDrop = addContext(dropTargetContext)(props =>
+    !props.dropTargetCanDrop ? React.Children.map(props.children, child => child) : null
+);
+
+export {hierarchicalDropTarget, Draggable, DropTarget, Active, Inactive, CanDrop, CannotDrop};

@@ -53,7 +53,7 @@ const dropTarget = DropTargetBase(
                 array: () => props.accepts.includes(type),
                 object: () => o(typeof(props.accepts[type])).switch({
                     boolean: () => props.accepts[type],
-                    function: () => props.accepts[type](item),
+                    function: () => props.accepts[type](item, props),
                     undefined: () => false,
                 })
             });

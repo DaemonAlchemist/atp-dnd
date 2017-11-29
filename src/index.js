@@ -3,9 +3,6 @@
  */
 
 import React from 'react';
-import {DropTarget as DropTargetBase} from 'react-dnd';
-import {notEmpty} from 'atp-pointfree';
-import {o} from 'atp-sugar';
 import Draggable from "./containers/drag-source";
 import DropTarget, {dropTargetContext} from "./containers/drop-target";
 import {addContext} from 'atp-react-context';

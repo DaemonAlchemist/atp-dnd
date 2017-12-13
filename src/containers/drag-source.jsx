@@ -4,8 +4,9 @@
 
 import React from 'react';
 import {DragSource} from "react-dnd";
+import {findDOMNode} from 'react-dom';
 
-export default DragSource(
+const connector = DragSource(
     props => props.type,
     {
         beginDrag: (props, monitor, component) => ({
@@ -23,8 +24,19 @@ export default DragSource(
         dragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     })
-)(props => props.dragSource(
-    <div style={props.style || {}}>
-        {props.children}
-    </div>
-));
+);
+
+const DraggableComponent = ({dragSource, children, component, ...rest}) => {
+    const props = {
+        ...rest,
+        ref: instance => dragSource(findDOMNode(instance))
+    };
+
+    const Component = component || "div";
+
+    return typeof Component === 'string'
+        ? React.createElement(Component, {...props, children})
+        : <Component {...props}>{children}</Component>;
+};
+
+export default connector(DraggableComponent);

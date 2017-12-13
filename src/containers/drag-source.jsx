@@ -6,7 +6,7 @@ import React from 'react';
 import {DragSource} from "react-dnd";
 import {findDOMNode} from 'react-dom';
 
-const connector = DragSource(
+export default DragSource(
     props => props.type,
     {
         beginDrag: (props, monitor, component) => ({
@@ -24,9 +24,7 @@ const connector = DragSource(
         dragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     })
-);
-
-const DraggableComponent = ({dragSource, children, component, ...rest}) => {
+)(({dragSource, children, component, ...rest}) => {
     const props = {
         ...rest,
         ref: instance => dragSource(findDOMNode(instance))
@@ -37,6 +35,4 @@ const DraggableComponent = ({dragSource, children, component, ...rest}) => {
     return typeof Component === 'string'
         ? React.createElement(Component, {...props, children})
         : <Component {...props}>{children}</Component>;
-};
-
-export default connector(DraggableComponent);
+});

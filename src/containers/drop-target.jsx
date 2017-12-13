@@ -6,11 +6,11 @@ import React from 'react';
 import {DropTarget as DropTargetBase} from "react-dnd";
 import {o} from 'atp-sugar';
 import typeOf from 'typeof';
-import {Active, Inactive} from "../index";
 import {notEmpty} from 'atp-pointfree';
 import {provideContext} from 'atp-react-context';
 import PropTypes from "prop-types";
 import {compose} from 'atp-pointfree';
+import {findDOMNode} from 'react-dom';
 
 export const dropTargetContext = {
     dropTargetIsOver: PropTypes.bool,
@@ -69,8 +69,15 @@ const dropTarget = DropTargetBase(
 export default compose(
     dropTarget,
     provideContext(dropTargetContext),
-)(props => props.dropTarget(
-    <div style={props.style || {}}>
-        {props.children}
-    </div>
-));
+)(({dropTarget, component, children, ...rest}) => {
+    const props = {
+        ...rest,
+        ref: instance => dropTarget(findDOMNode(instance))
+    };
+
+    const Component = component || "div";
+
+    return typeof Component === 'string'
+        ? React.createElement(Component, {...props, children})
+        : <Component {...props}>{children}</Component>;
+});

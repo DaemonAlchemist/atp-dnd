@@ -5,8 +5,15 @@
 import React from 'react';
 import {DragSource} from "react-dnd";
 import {findDOMNode} from 'react-dom';
+import {provideContext} from 'atp-react-context';
+import {compose} from 'atp-pointfree';
+import PropTypes from "prop-types";
 
-export default DragSource(
+export const dragSourceContext = {
+    isDragging: PropTypes.bool,
+};
+
+const dragSource = DragSource(
     props => props.type,
     {
         beginDrag: (props, monitor, component) => ({
@@ -24,6 +31,11 @@ export default DragSource(
         dragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     })
+);
+
+export default compose(
+    dragSource,
+    provideContext(dragSourceContext)
 )(({
     dragSource, children, component,
     isDragging, //Don't pass these down to components

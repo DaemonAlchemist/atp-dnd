@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import Draggable from "./containers/drag-source";
+import Draggable, {dragSourceContext} from "./containers/drag-source";
 import DropTarget, {dropTargetContext} from "./containers/drop-target";
 import {addContext} from 'atp-react-context';
 
@@ -15,6 +15,14 @@ const Inactive = addContext(dropTargetContext)(props =>
     !props.dropTargetIsOver ? React.Children.map(props.children, child => child) : null
 );
 
+const IsDragging = addContext(dragSourceContext)(props =>
+    props.isDragging ? React.Children.map(props.children, child => child) : null
+);
+
+const NotDragging = addContext(dragSourceContext)(props =>
+    !props.isDragging ? React.Children.map(props.children, child => child) : null
+);
+
 const CanDrop = addContext(dropTargetContext)(props =>
     props.dropTargetCanDrop ? React.Children.map(props.children, child => child) : null
 );
@@ -23,4 +31,4 @@ const CannotDrop = addContext(dropTargetContext)(props =>
     !props.dropTargetCanDrop ? React.Children.map(props.children, child => child) : null
 );
 
-export {Draggable, DropTarget, Active, Inactive, CanDrop, CannotDrop};
+export {Draggable, DropTarget, Active, Inactive, IsDragging, NotDragging, CanDrop, CannotDrop};

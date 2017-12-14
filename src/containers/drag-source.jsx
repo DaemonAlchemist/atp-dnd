@@ -24,7 +24,11 @@ export default DragSource(
         dragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     })
-)(({dragSource, children, component, ...rest}) => {
+)(({
+    dragSource, children, component,
+    isDragging, //Don't pass these down to components
+    ...rest
+}) => {
     const props = {
         ...rest,
         ref: instance => dragSource(findDOMNode(instance))

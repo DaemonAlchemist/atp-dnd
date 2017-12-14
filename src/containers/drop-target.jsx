@@ -69,7 +69,11 @@ const dropTarget = DropTargetBase(
 export default compose(
     dropTarget,
     provideContext(dropTargetContext),
-)(({dropTarget, component, children, ...rest}) => {
+)(({
+    dropTarget, component, children,
+    onReceiveDrop, dropTargetCanDrop, dropTargetIsOver, //Don't pass these down to the component
+    ...rest
+}) => {
     const props = {
         ...rest,
         ref: instance => dropTarget(findDOMNode(instance))

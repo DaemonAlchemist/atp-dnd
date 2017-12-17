@@ -3,32 +3,20 @@
  */
 
 import React from 'react';
-import Draggable, {dragSourceContext} from "./containers/drag-source";
-import DropTarget, {dropTargetContext} from "./containers/drop-target";
-import {addContext} from 'atp-react-context';
+import Draggable from "./containers/drag-source";
+import DropTarget from "./containers/drop-target";
+import {Active, Inactive, IsDragging, NotDragging, CanDrop, CannotDrop} from './containers/context';
+import Standard from "./components/drop-targets/standard";
+import TableRow from "./components/drop-targets/table-row";
 
-const Active = addContext(dropTargetContext)(props =>
-    props.dropTargetIsOver ? React.Children.map(props.children, child => child) : null
-);
+const DropTargets = {
+    Standard, TableRow
+};
 
-const Inactive = addContext(dropTargetContext)(props =>
-    !props.dropTargetIsOver ? React.Children.map(props.children, child => child) : null
-);
-
-const IsDragging = addContext(dragSourceContext)(props =>
-    props.isDragging ? React.Children.map(props.children, child => child) : null
-);
-
-const NotDragging = addContext(dragSourceContext)(props =>
-    !props.isDragging ? React.Children.map(props.children, child => child) : null
-);
-
-const CanDrop = addContext(dropTargetContext)(props =>
-    props.dropTargetCanDrop ? React.Children.map(props.children, child => child) : null
-);
-
-const CannotDrop = addContext(dropTargetContext)(props =>
-    !props.dropTargetCanDrop ? React.Children.map(props.children, child => child) : null
-);
-
-export {Draggable, DropTarget, Active, Inactive, IsDragging, NotDragging, CanDrop, CannotDrop};
+export {
+    Draggable, DropTarget,
+    DropTargets,
+    Active, Inactive,
+    IsDragging, NotDragging,
+    CanDrop, CannotDrop
+};

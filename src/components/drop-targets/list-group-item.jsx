@@ -2,6 +2,7 @@
 import React from 'react';
 import DropTarget from "../../containers/drop-target";
 import {Active, Inactive, CanDrop} from "../../containers/context";
+import {ListGroupItem} from 'react-bootstrap';
 
 export default ({id, accepts, action, onMove}) =>
     <DropTarget
@@ -13,7 +14,9 @@ export default ({id, accepts, action, onMove}) =>
     >
         <CanDrop>
             <Active>
-                <div style={{border: "dashed 1px", margin: "8px"}}>&nbsp;</div>
+                <ListGroupItem>
+                    <div style={{border: "dashed 1px"}}>&nbsp;</div>
+                </ListGroupItem>
             </Active>
             <Inactive>
                 <div style={{
@@ -21,8 +24,7 @@ export default ({id, accepts, action, onMove}) =>
                     position: "absolute",
                     width: "100%",
                     zIndex: 999,
-                    background: "transparent",
-                    border: "dashed 1px"
+                    background: "transparent"
                 }}/>
             </Inactive>
         </CanDrop>

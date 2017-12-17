@@ -8,9 +8,9 @@ import DropTarget from "./containers/drop-target";
 import {Active, Inactive, IsDragging, NotDragging, CanDrop, CannotDrop} from './containers/context';
 import Standard from "./components/drop-targets/standard";
 import TableRow from "./components/drop-targets/table-row";
-
+import ListGroupItem from "./components/drop-targets/list-group-item";
 const DropTargets = {
-    Standard, TableRow
+    Standard, TableRow, ListGroupItem
 };
 
 export {

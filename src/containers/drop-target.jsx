@@ -1,6 +1,3 @@
-/**
- * Created by Andrea on 11/9/2017.
- */
 
 import React from 'react';
 import {DropTarget as DropTargetBase} from "react-dnd";

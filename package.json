@@ -28,24 +28,24 @@
   "author": "Andrew Wittrock",
   "license": "MIT",
   "dependencies": {
-    "atp-pointfree": "^0.8.1",
-    "atp-react-context": "^0.1.3",
+    "atp-pointfree": "^0.10.1",
+    "atp-react-context": "^0.1.4",
     "atp-sugar": "^0.8.4",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
-    "react-dnd": "^2.5.4",
-    "react-dom": "^16.2.0",
+    "react-dnd": "^5.0.0",
+    "react-dom": "^16.4.1",
     "typeof": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
     "chai": "^4.1.2",
     "clean-documentation-theme": "^0.5.2",
-    "dependency-check": "^3.0.0",
-    "documentation": "^5.3.5",
-    "mocha": "^5.0.0"
+    "dependency-check": "^3.2.0",
+    "documentation": "^8.0.2",
+    "mocha": "^5.2.0"
   }
 }
